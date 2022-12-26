@@ -52,7 +52,7 @@
         width: 100%;
         height: 10vh;
         background-color: #9babfb;
-        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
         justify-content: center;
         display: flex;
       }
@@ -82,7 +82,10 @@
         display: grid;
         grid-template-columns: 1fr 1.5fr;
         justify-content: center;
-        padding-top: 4rem;
+        padding: 4rem .5rem;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        margin: .5rem;
       }
 
       ul.tabs {
@@ -112,7 +115,7 @@
       ul.tabs li.current {
         background: #9babfb;
         color: #353459;
-        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
       }
 
       .tab-content {
@@ -122,54 +125,186 @@
       }
 
       .tab-content.current {
-        display: inherit;
+        display: flex;
+        flex-direction: column;
+       align-items: flex-end;
+      }
+      /* 9BABFB
+#353459
+#81849C
+#7C7C99 */
+
+      .form-group {
+        display: flex;
+        height: 6vh;
+      }
+      .form-group label{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #353459;
+        padding-right: .3rem;
+      }
+      /**
+      *
+      *INPUTS
+      */
+      input[type=number]{
+        outline: none;
+        border: 1px solid #7C7C99;
+        background-color: #ececfb;
+        padding: .3rem ;
+        width: 4rem;
+        font-size: 1.2rem;
+        color: #353459;
+        border-radius: 5px;
+        height: 2rem;
+      }
+      input[type=number]:focus{
+        outline: none;
       }
       .video {
         width: 100%;
         position: relative;
-        height: 100vh;
+        height: 80vh;
+        grid-gap: .5rem;
         display: grid;
-        grid-template-rows: .5fr 2fr 2fr;
-        border: 2px solid gray;
+        grid-template-rows: .5fr 2fr .5fr;
+        align-items: flex-start;
+
       }
       .video-header{
-        border: 2px solid red;
         width: 100%;
         padding-top: 1rem;
         position: relative;
       }
-      .btn-download{
+      .download-btn{
         position: absolute;
         padding: .5rem 2rem;
         font-size: 1.2rem;
         right: 0;
         border-radius: 5px;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
         cursor: pointer;
         background-color: #9babfb;
         text-align: center;
-        font-weight: 500;
-        
+        font-weight: 500; 
       }
-      .btn-download:hover{
+      .download-btn:hover{
         opacity: .9;
-        color: #fff;
-        
+        color: #fff; 
       }
-      .btn-download span{
+      .download-btn span{
         /* border: 2px solid black; */
         font-size: 1.2rem;
         padding-left: .5rem;
       
     }
      .video-upload{
-        border: 2px solid green;
         width: 100%;
+        display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
      }
+     .uploader {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        cursor: pointer;
+      padding: 2rem 5rem;
+     }
+     .uploader h3{
+      color: #353459;
+     }
+     .uploader span{
+      padding: .7rem 0rem;
+      font-size: 5rem;
+      color: #353459;
+     }
+     .browser-btn{
+        padding: .5rem 2rem;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        cursor: pointer;
+        background-color: #9babfb;
+        text-align: center;
+        font-weight: 500; 
+      }
+      .browser-btn:hover{
+        opacity: .9;
+        color: #fff; 
+      }
       .video-render{
-        border: 2px solid red;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
 
+      }
+      
+
+      .execute-btn{
+        padding: .5rem 3rem;
+        font-size: 1.7rem;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        cursor: pointer;
+        background-color: #9babfb;
+        text-align: center;
+        font-weight: 700; 
+        color: #353459;
+      }
+      .execute-btn:hover{
+        opacity: .9;
+        color: #fff; 
+      }
+      /***********
+      *LOADER ANIMATION
+      *********/
+      #loaderdiv{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      #loaderdiv p{
+color: #353459;
+font-size: 1.2rem;
+      }
+      .loader {
+    width: 48px;
+    height: 48px;
+    border: 3px solid #353459;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    }
+      .footer{
+        position: relative;
+        background-color: #353459;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 7vh;
+      }
+      .footer p{
+        color: #fff;
       }
     </style>
   </head>
@@ -192,10 +327,14 @@
           </ul>
 
           <div id="tab-1" class="tab-content current">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat.
+            <div class="form-group">
+              <label for="">Início (em segundos)</label>
+              <input type="number" id="cutstart" value="0" />
+            </div>
+            <div class="form-group">
+              <label for="">Fim (em segundos)</label>
+              <input type="number" id="cutend" value="0" />
+            </div>
           </div>
           <div id="tab-2" class="tab-content">
             Duis aute irure dolor in reprehenderit in voluptate velit esse
@@ -206,18 +345,39 @@
         </div>
         <div class="video">
             <div class="video-header">
-                <a class="btn-download">
+                <a class="download-btn">
                     Baixar<span><i class="fa-solid fa-download"></i></span>
                 </a>
             </div>
-            <div class="video-upload"></div>
-            <div class="video-render"></div>
+            <div class="video-upload">
+              <div class="uploader">
+                <h3>Carregar video</h3>
+                <span>
+                  <i class="fa-brands fa-youtube"></i>
+                </span>
+                <input hidden type="file" id="uploader" required accept="video/*" />
+                <p id="video"></p>
+                <div onclick="open_file()" class="browser-btn">
+                  Procurar
+                </div>
+              </div>
+            </div>
+            <div class="video-render">
+              <div id="executebtn" class="execute-btn">Processar</div>
+              <div id="loaderdiv">
+                <span class="loader"></span>
+                <p id="loadertext"></p>
+              </div>
+            </div>
             
         </div>
       </div>
     </div>
+    <div class="footer">
+      <p>©ED 2023</p>
+    </div>
   </body>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.js"></script>
   <script>
     !(function (e, t) {
       "object" == typeof exports && "object" == typeof module
@@ -1481,6 +1641,41 @@
     //# sourceMappingURL=ffmpeg.min.js.map
   </script>
   <script>
+    const {createFFmpeg, fetchFile} = FFmpeg;
+     function getFileExtenstion(filename) {
+      const extension = filename.split('.').pop();
+      return extension;
+     }
+    const ffmpeg = createFFmpeg({progress:(e) =>{
+      $('#executebtn').hide();
+      $('#loaderdiv').show();
+      $('#loadertext').text("A carregar "+ Math.round(e.ratio * 100)+" %")
+    }})
+
+    const transcode = async ({target:{files}}) =>{
+
+      const {name} = files[0];
+      console.log(files);
+      console.log(getFileExtenstion(name))
+      await ffmpeg.load();
+      ffmpeg.FS('writeFile', name, await fetchFile(files[0]));
+      await ffmpeg.run('-i', name, '-ss', $('#cutstart').val(), '-to', $('#cutend').val(),
+      `$(getFileExtenstion(name))`, `output.$(getFileExtenstion(name))`);
+
+      const data = ffmpeg.FS('readFile', `output.$(getFileExtenstion(name))`);
+
+      console.log(data)
+    }
+
+    // document.getElementById('file').addEventListener('change', transcode);
+    
+    function open_file() {
+      
+      const elm = document.getElementById("uploader");
+        elm.addEventListener("change", transcode);
+        elm.click()
+    }
+    $('#loaderdiv').hide();
     // const { createFFmpeg, fetchFile } = FFmpeg;
     // const ffmpeg = createFFmpeg({
     //   progress: (e) => {
