@@ -173,21 +173,24 @@
 
       }
       .video-header{
+        justify-content: center;
+        align-items: center;
         width: 100%;
-        padding-top: 1rem;
         position: relative;
+        display: flex;
+        flex-direction: column;
       }
       .download-btn{
-        position: absolute;
+        position: relative;
         padding: .5rem 2rem;
         font-size: 1.2rem;
-        right: 0;
         border-radius: 5px;
         box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
         cursor: pointer;
         background-color: #9babfb;
         text-align: center;
         font-weight: 500; 
+        margin-bottom: .5rem;
       }
       .download-btn:hover{
         opacity: .9;
@@ -245,22 +248,43 @@
         width: 100%;
 
       }
-      
-
-      .execute-btn{
-        padding: .5rem 3rem;
-        font-size: 1.7rem;
+      .restart{
+        padding: .5rem 2rem;
+        font-size: 1.2rem;
         border-radius: 5px;
         box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
         cursor: pointer;
         background-color: #9babfb;
         text-align: center;
-        font-weight: 700; 
-        color: #353459;
+        font-weight: 500; 
       }
-      .execute-btn:hover{
+      .restart:hover{
         opacity: .9;
         color: #fff; 
+      }
+      .check-container{
+        position: relative;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .check-container span{
+       font-size: 2.5rem;
+       background-color: #6BE3A2;
+       border-radius: 50px;
+       align-items: center;
+       padding: .5rem;
+       display: flex;
+      }
+      .check-container span i{
+       color: #324561;
+      }
+      .check-container p{
+       color: #353459;
+       padding-top: .5rem;
+       font-size: 1.2rem;
+       font-weight: 500;
       }
       /***********
       *LOADER ANIMATION
@@ -302,6 +326,7 @@ font-size: 1.2rem;
         align-items: center;
         width: 100%;
         height: 7vh;
+        bottom: 0;
       }
       .footer p{
         color: #fff;
@@ -333,7 +358,7 @@ font-size: 1.2rem;
             </div>
             <div class="form-group">
               <label for="">Fim (em segundos)</label>
-              <input type="number" id="cutend" value="0" />
+              <input type="number" id="cutend" value="10" />
             </div>
           </div>
           <div id="tab-2" class="tab-content">
@@ -344,18 +369,14 @@ font-size: 1.2rem;
           </div>
         </div>
         <div class="video">
-            <div class="video-header">
-                <a class="download-btn">
-                    Baixar<span><i class="fa-solid fa-download"></i></span>
-                </a>
-            </div>
+            
             <div class="video-upload">
               <div class="uploader">
                 <h3>Carregar video</h3>
                 <span>
                   <i class="fa-brands fa-youtube"></i>
                 </span>
-                <input hidden type="file" id="uploader" required accept="video/*" />
+                <input hidden type="file" id="files" required accept="video/*" />
                 <p id="video"></p>
                 <div onclick="open_file()" class="browser-btn">
                   Procurar
@@ -363,15 +384,29 @@ font-size: 1.2rem;
               </div>
             </div>
             <div class="video-render">
-              <div id="executebtn" class="execute-btn">Processar</div>
+              <div id="checkcontainer" class="check-container">
+                <span>
+                  <i class="fa-solid fa-check"></i>
+                </span>
+                <p>Click para baixar</p>
+                
+              </div>
+             
               <div id="loaderdiv">
                 <span class="loader"></span>
                 <p id="loadertext"></p>
               </div>
             </div>
-            
+            <div id="btns" class="video-header">
+              <a id="downloadbtn" class="download-btn">
+                Baixar<span><i class="fa-solid fa-download"></i></span>
+            </a>
+            <a id="restart" class="restart">Reiniciar<span> <i class="fa-solid fa-arrows-rotate"></i></span></a>
+            </div>
+           
         </div>
       </div>
+      
     </div>
     <div class="footer">
       <p>©ED 2023</p>
@@ -1647,93 +1682,65 @@ font-size: 1.2rem;
       return extension;
      }
     const ffmpeg = createFFmpeg({progress:(e) =>{
-      $('#executebtn').hide();
+     
       $('#loaderdiv').show();
-      $('#loadertext').text("A carregar "+ Math.round(e.ratio * 100)+" %")
-    }})
+      $('#loadertext').text("A carregar "+ Math.round(e.ratio * 100)+" %");
 
+      
+    }})
+  
     const transcode = async ({target:{files}}) =>{
 
       const {name} = files[0];
-      console.log(files);
-      console.log(getFileExtenstion(name))
+      // console.log(files);
+      // console.log(getFileExtenstion(name))
       await ffmpeg.load();
       ffmpeg.FS('writeFile', name, await fetchFile(files[0]));
-      await ffmpeg.run('-i', name, '-ss', $('#cutstart').val(), '-to', $('#cutend').val(),
-      `$(getFileExtenstion(name))`, `output.$(getFileExtenstion(name))`);
+      await ffmpeg.run('-i', name,'-ss', $('#cutstart').val(), '-to', $('#cutend').val(),'-f',`${getFileExtenstion(name)}`,`output.${getFileExtenstion(name)}`);
 
-      const data = ffmpeg.FS('readFile', `output.$(getFileExtenstion(name))`);
-
-      console.log(data)
+      const data = ffmpeg.FS("readFile", `output.${getFileExtenstion(name)}`);
+      if(data){
+        $('#checkcontainer').show();
+        $('#loaderdiv').hide();
+        $('#btns').show();
+        
+      }
+      // console.log(data)
+      const link = document.getElementById('a');
+      link.href = URL.createObjectURL(
+        new Blob([data.buffer], {
+          type: `video/${getFileExtenstion(name)}`
+        })
+      );
+      link.download = Date.now() + `.${getFileExtenstion(name)}`
+      
+      $( "#downloadbtn" ).click(function() {
+        if (link) {
+          link.click()
+        }    
+    });
     }
 
     // document.getElementById('file').addEventListener('change', transcode);
-    
+    $( "#restart" ).click(function() {
+      location.reload();
+    });
     function open_file() {
       
-      const elm = document.getElementById("uploader");
+      const elm = document.getElementById("files");
         elm.addEventListener("change", transcode);
         elm.click()
     }
     $('#loaderdiv').hide();
-    // const { createFFmpeg, fetchFile } = FFmpeg;
-    // const ffmpeg = createFFmpeg({
-    //   progress: (e) => {
-    //     $("#button").prop("disabled", "true");
-    //     $("#button").text("Processing Video in Seconds " + e.time + "%");
-    //   },
-    // });
-    // function getFileExtension(filename) {
-    //   // get file extension
-    //   const extension = filename.split(".").pop();
-    //   return extension;
-    // }
-    // const transcode = async ({ target: { files } }) => {
-    //   await ffmpeg.load();
-    //   const inputPaths = [];
-    //   for (const file of files) {
-    //     let { name } = file;
-    //     let temp = name;
-    //     name = Date.now() + "." + getFileExtension(temp);
-    //     ffmpeg.FS("writeFile", name, await fetchFile(file));
-    //     inputPaths.push(`file ${name}`);
-    //   }
-    //   ffmpeg.FS("writeFile", "concat_list.txt", inputPaths.join("\n"));
-    //   await ffmpeg.run(
-    //     "-f",
-    //     "concat",
-    //     "-safe",
-    //     "0",
-    //     "-i",
-    //     "concat_list.txt",
-    //     "output.mp4"
-    //   );
-    //   const data = ffmpeg.FS("readFile", "output.mp4");
-    //   $("#again").show();
-    //   $("#uploader").hide();
-    //   $("#button").hide();
-
-    //   const link = document.createElement("a");
-    //   link.href = URL.createObjectURL(
-    //     new Blob([data.buffer], {
-    //       type: "video/mp4",
-    //     })
-    //   );
-    //   link.download = Date.now() + ".mp4";
-    //   document.body.appendChild(link);
-    //   link.click();
-    //   document.body.removeChild(link);
-    // };
-    // const elm = document.getElementById("uploader");
-    // elm.addEventListener("change", transcode);
-
-   
-
+    $('#checkcontainer').hide();
+    $('#btns').hide();
+ 
     /*****
      * Tab Section
      * **/
 
      $(document).ready(function(){
+     
 	
 	$('ul.tabs li').click(function(){
 		var tab_id = $(this).attr('data-tab');
