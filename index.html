@@ -26,6 +26,9 @@
         width: 5px;
         border-radius: 5rem;
       }
+      *:focus {
+    outline: none;
+}
 
       /* Track */
       ::-webkit-scrollbar-track {
@@ -71,7 +74,7 @@
         min-height: 100vh;
     
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(1, 1fr);
         justify-content: center;
         align-items: center;
         grid-gap: 1rem;
@@ -80,14 +83,19 @@
         position: relative;
         height: 100vh;
         display: grid;
-        grid-template-columns: 1fr 1.5fr;
+        grid-template-columns: .5fr 2fr;
         justify-content: center;
         padding: 4rem .5rem;
         border-radius: 5px;
-        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+       
         margin: .5rem;
+        
       }
-
+      .content-main {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+      }
       ul.tabs {
         margin: 0px;
         padding: 0px;
@@ -98,11 +106,12 @@
         color: #353459;
         padding:.5rem 1rem;
         cursor: pointer;
-        border-radius: 5px;
+        /* border-radius: 5px; */
         font-size: 1rem;
         font-weight: 700;
         text-transform: capitalize;
         text-align: center;
+        margin: .2rem 0;
        
         
       }
@@ -113,7 +122,7 @@
         font-size: 1.2rem;
       }
       ul.tabs li.current {
-        background: #9babfb;
+        /* background: #9babfb; */
         color: #353459;
         box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
       }
@@ -122,12 +131,15 @@
         display: none;
         background: #ececfb;
         padding: 15px;
+        /* border: 3px solid red; */
       }
 
       .tab-content.current {
-        display: flex;
-        flex-direction: column;
-       align-items: flex-end;
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(1,1fr);
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+
       }
       /* 9BABFB
 #353459
@@ -143,6 +155,25 @@
         font-weight: 700;
         color: #353459;
         padding-right: .3rem;
+      }
+      .form-column {
+        display: flex;
+        flex-direction: column;
+      }
+      .form-column label{
+        padding: 1rem 0rem;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .form-column input[type=text]{
+        padding: 1rem 1rem;
+        width: 90%;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        background-color: #ececfb;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 700;
       }
       /**
       *
@@ -268,6 +299,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-top: 2rem;
       }
       .check-container span{
        font-size: 2.5rem;
@@ -348,63 +380,148 @@ font-size: 1.2rem;
                  <span><i class="fa-solid fa-crop"></i></i> </span>Recortar vídeo</li>
             <li class="tab-link" data-tab="tab-2">
                 <span><i class="fa-solid fa-font"></i>
-                </span>Adicionar Texto</li>
+                </span>Adicionar texto</li>
+
+                <li class="tab-link" data-tab="tab-3">
+                  <i class="fa-solid fa-microphone-slash"></i>
+                  </span>Remover audio</li>
           </ul>
 
           <div id="tab-1" class="tab-content current">
-            <div class="form-group">
-              <label for="">Início (em segundos)</label>
-              <input type="number" id="cutstart" value="0" />
+            <div class="content-main">
+              <div class="inputs">
+                <div class="form-group">
+                  <label for="">Início (em segundos)</label>
+                  <input type="number" id="cutstart" value="0" />
+                </div>
+                <div class="form-group">
+                  <label for="">Fim (em segundos)</label>
+                  <input type="number" id="cutend" value="10" />
+                </div>
+              </div>
+              <div class="video">
+            
+                <div class="video-upload">
+                  <div class="uploader">
+                    <h3>Carregar video</h3>
+                    <span>
+                      <i class="fa-brands fa-youtube"></i>
+                    </span>
+                    <input hidden type="file" id="files" required accept="video/*" />
+                    <p id="video"></p>
+                    <div onclick="open_file()" class="browser-btn">
+                      Procurar
+                    </div>
+                  </div>
+                </div>
+                <div class="video-render">
+                  <div id="checkcontainer" class="check-container">
+                    <span>
+                      <i class="fa-solid fa-check"></i>
+                    </span>
+                    <p>Click para baixar</p>
+                    
+                  </div>
+                 
+                  <div id="loaderdiv">
+                    <span class="loader"></span>
+                    <p id="loadertext"></p>
+                  </div>
+                </div>
+                <div id="btns" class="video-header">
+                  <a id="downloadbtn" class="download-btn">
+                    Baixar<span><i class="fa-solid fa-download"></i></span>
+                </a>
+                <a id="restart" class="restart">Reiniciar<span> <i class="fa-solid fa-arrows-rotate"></i></span></a>
+                </div>
+               
             </div>
-            <div class="form-group">
-              <label for="">Fim (em segundos)</label>
-              <input type="number" id="cutend" value="10" />
             </div>
           </div>
           <div id="tab-2" class="tab-content">
-            Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-            cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
-          </div>
-        </div>
-        <div class="video">
-            
-            <div class="video-upload">
-              <div class="uploader">
-                <h3>Carregar video</h3>
-                <span>
-                  <i class="fa-brands fa-youtube"></i>
-                </span>
-                <input hidden type="file" id="files" required accept="video/*" />
-                <p id="video"></p>
-                <div onclick="open_file()" class="browser-btn">
-                  Procurar
+            <div class="content-main">
+              <div class="inputs">
+                <div class="form-column">
+                  <label>Digitar qualquer texto</label>
+                  <input type="text" required id="textInput"/>
                 </div>
               </div>
+              <div class="video">
+            
+                <div class="video-upload">
+                  <div class="uploader">
+                    <h3>Carregar video</h3>
+                    <span>
+                      <i class="fa-brands fa-youtube"></i>
+                    </span>
+                    <input hidden type="file" id="files" required accept="video/*" />
+                    <p id="video"></p>
+                    <div onclick="open_file1()" class="browser-btn">
+                      Procurar
+                    </div>
+                  </div>
+                </div>
+                <div class="video-render">
+                  <div id="checkcontainer1" class="check-container">
+                    <span>
+                      <i class="fa-solid fa-check"></i>
+                    </span>
+                    <p>Click para baixar</p>
+                    
+                  </div>
+                 
+                  <div id="loaderdiv1">
+                    <span class="loader"></span>
+                    <p id="loadertext"></p>
+                  </div>
+                </div>
+                <div id="btns1" class="video-header">
+                  <a id="downloadbtn1" class="download-btn">
+                    Baixar<span><i class="fa-solid fa-download"></i></span>
+                </a>
+                <a id="restart" class="restart">Reiniciar<span> <i class="fa-solid fa-arrows-rotate"></i></span></a>
+                </div>
+               
             </div>
-            <div class="video-render">
-              <div id="checkcontainer" class="check-container">
-                <span>
-                  <i class="fa-solid fa-check"></i>
-                </span>
-                <p>Click para baixar</p>
-                
+            </div>
+          </div>
+          <div id="tab-3" class="tab-content">
+            <div class="content-main">
+              <div class="inputs">
+                <div class="form-column">
+                 
+                </div>
               </div>
-             
-              <div id="loaderdiv">
-                <span class="loader"></span>
-                <p id="loadertext"></p>
-              </div>
+              <div class="video">
+            
+                <div class="video-upload">
+                  <div class="uploader">
+                    <h3>Carregar video</h3>
+                    <span>
+                      <i class="fa-brands fa-youtube"></i>
+                    </span>
+                    <input hidden type="file" id="files" required accept="video/*" />
+                    <p id="video"></p>
+                    <div onclick="open_file_remove_audio()" class="browser-btn">
+                      Procurar
+                    </div>
+                  </div>
+                </div>
+                <div class="video-render">
+                  <div id="loaderdiv2">
+                    <span class="loader"></span>
+                    <p id="loadertext"></p>
+                  </div>
+                </div>
+                <div id="btns1" class="video-header">
+                  
+                </div>
+               
             </div>
-            <div id="btns" class="video-header">
-              <a id="downloadbtn" class="download-btn">
-                Baixar<span><i class="fa-solid fa-download"></i></span>
-            </a>
-            <a id="restart" class="restart">Reiniciar<span> <i class="fa-solid fa-arrows-rotate"></i></span></a>
             </div>
-           
+          </div>
         </div>
+       
       </div>
       
     </div>
@@ -1677,6 +1794,7 @@ font-size: 1.2rem;
   </script>
   <script>
     const {createFFmpeg, fetchFile} = FFmpeg;
+    var VALUE = '';
      function getFileExtenstion(filename) {
       const extension = filename.split('.').pop();
       return extension;
@@ -1705,8 +1823,8 @@ font-size: 1.2rem;
         $('#btns').show();
         
       }
-      // console.log(data)
-      const link = document.getElementById('a');
+      console.log(data)
+      const link = document.createElement('a');
       link.href = URL.createObjectURL(
         new Blob([data.buffer], {
           type: `video/${getFileExtenstion(name)}`
@@ -1717,10 +1835,18 @@ font-size: 1.2rem;
       $( "#downloadbtn" ).click(function() {
         if (link) {
           link.click()
-        }    
+        }
+          
     });
     }
+    //get text field value
+    $("#textInput").on("input", function(){
+        // 
+        VALUE=$(this).val();
+        console.log(VALUE);
+       
 
+    });
     // document.getElementById('file').addEventListener('change', transcode);
     $( "#restart" ).click(function() {
       location.reload();
@@ -1731,10 +1857,84 @@ font-size: 1.2rem;
         elm.addEventListener("change", transcode);
         elm.click()
     }
+
     $('#loaderdiv').hide();
     $('#checkcontainer').hide();
     $('#btns').hide();
+
+    $('#loaderdiv1').hide();
+    $('#checkcontainer1').hide();
+    $('#btns1').hide();
+
+    $('#loaderdiv2').hide();
+    $('#checkcontainer1').hide();
+    $('#btns1').hide();
+
+   //segundo file input resolucao
+
+   //funcao que carrega do video e chama a constant transcode
+   function open_file1() {
+    if (!$('#inputText').val()) {
+            alert('Escereve alguma coisa!');
+        }
+      const elm = document.getElementById("files");
+        elm.addEventListener("change", transcode1);
+        elm.click()
+    }
+    const transcode1 = async ({target:{files}}) =>{
+      const file = files[0];
+      const formData = new FormData();
+      formData.append("file",file);
+      formData.append("VALUE",VALUE);
+      try {
+        let response = await fetch('/convert/', {
+        method: 'POST',
+        body: formData,
+        });
+        const result = await response.json();
+
+    } catch (error) {
+        console.log(error)
+    }
+    
+    }
+
+    ////////////////////////////////////////////////
+    
+
+    function open_file_remove_audio() {
  
+      
+      const elm = document.getElementById("files");
+        elm.addEventListener("change", transcode2);
+        elm.click()
+    }
+    const transcode2 = async ({target:{files}}) =>{
+      const file = files[0];
+      const formData = new FormData();
+      formData.append("file",file);
+      try {
+        let response = await fetch('/remove', {
+        method: 'POST',
+        body: formData,
+        });
+        const result = await response.json();
+
+        
+
+    } catch (error) {
+        console.log(error)
+    }
+    
+    }
+ 
+    
+    $('select').on('change', function(){
+      VALUE = this.value;
+      //alert(VALUE)
+    })
+
+
     /*****
      * Tab Section
      * **/
